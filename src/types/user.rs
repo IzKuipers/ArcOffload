@@ -1,12 +1,6 @@
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
-pub struct ApiResponse {
-    pub valid: bool,
-    pub data: Vec<User>,
-}
-
-#[derive(Debug, Deserialize)]
 pub struct User {
     pub username: String,
     pub acc: UserAcc,
