@@ -29,7 +29,9 @@ fn main() {
         port,
     );
 
-    println!("{:#?}", tree);
+    for i in 0..tree.len() {
+        let entry = tree.get(i);
 
-    println!("blah")
+        println!("{}", entry.unwrap().scoped_path);
+    }
 }
