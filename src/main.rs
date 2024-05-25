@@ -1,11 +1,10 @@
-use ui::error::error_and_exit;
-
-use crate::server::connect::connect_or_exit;
+use crate::{server::connect::connect_or_exit, ui::error::error_and_exit, util::read_str};
 
 mod args;
 mod server;
 mod types;
 mod ui;
+mod util;
 
 fn main() {
     let arguments = args::parse_args();
@@ -21,17 +20,22 @@ fn main() {
         error_and_exit("You shouldn't be able to see this", 1);
     }
 
-    let tree = server::tree::get_user_tree(
-        String::from("8022984c-c0f3-4ff4-a7dc-cae29f234170"),
-        server.clone(),
-        authcode.clone(),
-        is_https,
-        port,
-    );
+    let username = read_str("Username");
+    let password = read_str("Password");
 
-    for i in 0..tree.len() {
-        let entry = tree.get(i);
+    println!("{} -> {}", username, password); /*
 
-        println!("{}", entry.unwrap().scoped_path);
-    }
+                                              let tree = server::tree::get_user_tree(
+                                                  String::from("8022984c-c0f3-4ff4-a7dc-cae29f234170"),
+                                                  server.clone(),
+                                                  authcode.clone(),
+                                                  is_https,
+                                                  port,
+                                              );
+
+                                              for i in 0..tree.len() {
+                                                  let entry = tree.get(i);
+
+                                                  println!("{}", entry.unwrap().scoped_path);
+                                              } */
 }
