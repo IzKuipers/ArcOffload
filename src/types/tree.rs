@@ -4,7 +4,7 @@ use super::api::ApiResponse;
 
 #[derive(Debug, Deserialize)]
 pub struct TreeEntry {
-    #[serde(rename = "camelCase")]
+    #[serde(rename = "scopedPath")]
     pub scoped_path: String,
     pub mime: String,
     pub filename: String,
