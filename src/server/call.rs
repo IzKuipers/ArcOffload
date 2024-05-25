@@ -1,6 +1,4 @@
-use std::future::IntoFuture;
-
-use reqwest::{blocking::Response, Client};
+use reqwest::blocking::{Client, Response};
 
 pub fn make_server_call<T: for<'a> serde::de::Deserialize<'a>>(
     endpoint: String,
@@ -13,11 +11,7 @@ pub fn make_server_call<T: for<'a> serde::de::Deserialize<'a>>(
 ) -> T {
     let protocol = if is_https { "https://" } else { "http://" };
     let url = format!("{protocol}{server}:{port}{endpoint}?ac={authcode}");
-
-    let call: Result<Response, reqwest::Error> = reqwest::blocking::get(url);
-
-    let request: Result<Response, reqwest::Error> =
-        Client::new().get(url).bearer_auth(bearer).send().into();
+    let call: Result<Response, reqwest::Error> = Client::new().get(url).bearer_auth(bearer).send();
 
     return match call {
         Ok(data) => {

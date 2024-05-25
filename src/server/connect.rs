@@ -24,6 +24,7 @@ pub fn connect_or_exit(server: String, authcode: String, is_https: bool, port: u
         is_https,
         port,
         dummy_server_info(),
+        String::from(""),
     );
 
     if call.revision < 0 {
