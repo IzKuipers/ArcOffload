@@ -4,7 +4,7 @@ The official utility to download all your ArcFS files from any ArcAPI.
 Downloads can be found on the [releases](https://github.com/IzKuipers/ArcOffload/releases/latest) page.
 
 ## Usage
-You'll need a Linux or MacOS system, Windows isn't currently supported. [Download](https://github.com/IzKuipers/ArcOffload/releases/latest) the executable, and run `./arc-offload` from the terminal. Type `./arc-offload -h` to display the flags you can specify:
+Windows, Linux and MacOS are all supported. [Download](https://github.com/IzKuipers/ArcOffload/releases/latest) the executable, and run `./arc-offload` (`.\arc-offload.exe` for Windows) from the terminal. Type `./arc-offload -h` to display the flags you can specify:
 
 ```
 $ ./arc-offload -h
@@ -52,7 +52,7 @@ I will now start writing 6 file(s) to out. Confirm? [y/n]: y
 
 ## Notices
 - An artficial delay is introduced between file downloads to prevent a rate limit from occuring. Because of this, large ArcFS downloads may take a really long time.
-- The utility **does not** have support for downloading a specific folder instead of everything. It's all or nothing.'
+- The utility **does not** have support for downloading a specific folder instead of everything. It's all or nothing.
 - Please report any bugs you find on the [issues](https://github.com/IzKuipers/ArcOffload/issues) page so that I can fix them in a new release.
 
   This utility is written by the creator of ArcOS, but the ArcOS team will not give support for it in the ArcOS Community Discord Server. The Issues page is the only place where I'll give support.
