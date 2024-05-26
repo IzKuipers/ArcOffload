@@ -6,18 +6,14 @@ use reqwest::blocking::Client;
 use std::collections::HashMap;
 
 pub fn generate_token(username: &str, password: &str, connection: ServerConnection) -> String {
-    let url = format!(
-        "{}/v2/token/?ac={}",
-        connection.url.clone(),
-        connection.authcode.clone()
-    );
+    let url = format!("{}/v2/token/?ac={}", connection.url, connection.authcode);
 
     let mut params = HashMap::new();
 
     params.insert("username", username);
     params.insert("password", password);
 
-    let call = Client::new().post(url.clone()).form(&params).send();
+    let call = Client::new().post(url).form(&params).send();
 
     match call {
         Ok(data) => {

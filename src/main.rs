@@ -33,7 +33,7 @@ fn main() {
 
     let connection = server_connection(server.clone(), authcode.clone(), is_https, port);
 
-    connect_or_exit(server.clone(), authcode.clone(), is_https, port);
+    connect_or_exit(server, authcode, is_https, port);
 
     let token = stage_auth(connection.clone());
     let tree = stage_get_tree(token.clone(), connection.clone());
@@ -68,7 +68,7 @@ fn stage_go(tree: Vec<TreeEntry>, dest: String, token: String, connection: Serve
     confirm_or_exit(&format!(
         "I will now start writing {} file(s) to {}.",
         tree.len().to_string().blue().bold(),
-        dest.clone().yellow().bold(),
+        dest.yellow().bold(),
     ));
 
     println!("");

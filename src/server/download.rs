@@ -20,9 +20,7 @@ pub fn download_arcfs_file(
     let path = URL_SAFE.encode(scoped_path);
     let url = format!(
         "{}/fs/file/get?ac={}&path={}",
-        connection.url.clone(),
-        connection.authcode.clone(),
-        path
+        connection.url, connection.authcode, path
     );
 
     let call = Client::new().get(url).bearer_auth(token).send();

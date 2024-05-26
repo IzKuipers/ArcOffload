@@ -6,12 +6,8 @@ use crate::types::{
 use reqwest::blocking::Client;
 
 pub fn get_user_tree(token: String, connection: ServerConnection) -> Vec<TreeEntry> {
-    let url = format!(
-        "{}/fs/tree?ac={}",
-        connection.url.clone(),
-        connection.authcode.clone()
-    );
-    let call = Client::new().get(url.clone()).bearer_auth(token).send();
+    let url = format!("{}/fs/tree?ac={}", connection.url, connection.authcode);
+    let call = Client::new().get(url).bearer_auth(token).send();
 
     match call {
         Ok(data) => {
