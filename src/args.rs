@@ -26,6 +26,13 @@ pub struct Args {
         help = "Specify if you want to connect using HTTPS"
     )]
     pub is_https: bool,
+    #[arg(
+        short,
+        long,
+        default_value = "out",
+        help = "The directory to download the files to"
+    )]
+    pub destination: String,
 }
 
 pub fn parse_args() -> Args {

@@ -1,19 +1,16 @@
-use reqwest::blocking::Client;
-
 use crate::types::{
     api::ApiResponse,
+    connection::ServerConnection,
     tree::{tree_response_dummy, TreeEntry},
 };
+use reqwest::blocking::Client;
 
-pub fn get_user_tree(
-    token: String,
-    server: String,
-    authcode: String,
-    is_https: bool,
-    port: u16,
-) -> Vec<TreeEntry> {
-    let protocol = if is_https { "https://" } else { "http://" };
-    let url = format!("{protocol}{server}:{port}/fs/tree?ac={authcode}");
+pub fn get_user_tree(token: String, connection: ServerConnection) -> Vec<TreeEntry> {
+    let url = format!(
+        "{}/fs/tree?ac={}",
+        connection.url.clone(),
+        connection.authcode.clone()
+    );
     let call = Client::new().get(url.clone()).bearer_auth(token).send();
 
     match call {

@@ -1,12 +1,9 @@
-use crate::{
-    types::info::{dummy_server_info, ServerInfo},
-    ui::error::error_and_exit,
-};
+use crate::{server::info::get_server_info, ui::error::error_and_exit};
 use colored::Colorize;
 
 pub fn connect_or_exit(server: String, authcode: String, is_https: bool, port: u16) -> bool {
     println!(
-        "\nCalling up {} on port {} ({})...\n",
+        "Calling up {} on port {} (presumably {})...",
         server.clone().blue().bold(),
         port.to_string().purple(),
         (if authcode.clone().len() > 0 {
@@ -17,15 +14,7 @@ pub fn connect_or_exit(server: String, authcode: String, is_https: bool, port: u
         .yellow()
     );
 
-    let call = crate::server::call::make_server_call::<ServerInfo>(
-        "/v2/".to_string(),
-        server.clone(),
-        authcode.clone(),
-        is_https,
-        port,
-        dummy_server_info(),
-        String::from(""),
-    );
+    let call = get_server_info(server.clone(), authcode.clone(), is_https, port);
 
     if call.revision < 0 {
         error_and_exit(
