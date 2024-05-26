@@ -3,7 +3,7 @@ use types::{
     connection::{server_connection, ServerConnection},
     tree::TreeEntry,
 };
-use ui::{error::confirm_or_exit, intro::display_intro};
+use ui::{ansi::try_ansi_or_exit, error::confirm_or_exit, intro::display_intro};
 
 use crate::{
     server::{connect::connect_or_exit, download::write_full_tree, token::generate_token},
@@ -29,6 +29,7 @@ fn main() {
     let dest = arguments.destination;
     // ============================================================
 
+    try_ansi_or_exit();
     display_intro();
 
     let connection = server_connection(server.clone(), authcode.clone(), is_https, port);
