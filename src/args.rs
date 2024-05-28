@@ -33,6 +33,13 @@ pub struct Args {
         help = "The directory to download the files to"
     )]
     pub destination: String,
+    #[arg(
+        short,
+        long,
+        default_value_t = false,
+        help = "Read the username and password from .env"
+    )]
+    pub cred_from_env: bool,
 }
 
 pub fn parse_args() -> Args {

@@ -8,6 +8,7 @@ base64 = "0.22.1"
 bytes = "1.6.0"
 clap = { version = "4.5.4", features = ["derive"] }
 colored = "2.1.0"
+dotenv = "0.15.0"
 enable-ansi-support = "0.2.1"
 reqwest = { version = "0.12.4", features = ["json", "blocking", "multipart"] }
 rpassword = "7.3.1"

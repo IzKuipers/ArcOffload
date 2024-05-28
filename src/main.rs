@@ -1,15 +1,15 @@
-use colored::Colorize;
-use types::{
-    connection::{server_connection, ServerConnection},
-    tree::TreeEntry,
-};
-use ui::{ansi::try_ansi_or_exit, error::confirm_or_exit, intro::display_intro};
-
 use crate::{
     server::{connect::connect_or_exit, download::write_full_tree, token::generate_token},
     ui::error::error_and_exit,
     util::read_str,
 };
+use colored::Colorize;
+use dotenv::dotenv;
+use types::{
+    connection::{server_connection, ServerConnection},
+    tree::TreeEntry,
+};
+use ui::{ansi::try_ansi_or_exit, error::confirm_or_exit, intro::display_intro};
 
 mod args;
 mod env;
@@ -19,6 +19,7 @@ mod ui;
 mod util;
 
 fn main() {
+    dotenv().ok();
     // ============================================================
     let arguments = args::parse_args();
 
@@ -27,6 +28,7 @@ fn main() {
     let is_https = arguments.is_https;
     let port = if is_https { 443 } else { arguments.port };
     let dest = arguments.destination;
+    let use_env = arguments.cred_from_env;
     // ============================================================
 
     try_ansi_or_exit();
@@ -36,13 +38,32 @@ fn main() {
 
     connect_or_exit(server, authcode, is_https, port);
 
-    let token = stage_auth(connection.clone());
+    let token = stage_auth(connection.clone(), use_env);
     let tree = stage_get_tree(token.clone(), connection.clone());
 
     stage_go(tree, dest, token, connection)
 }
 
-fn stage_auth(connection: ServerConnection) -> String {
+fn stage_auth_env(connection: ServerConnection) -> String {
+    let username = std::env::var("OFFLOAD_USERNAME").unwrap_or(String::from(""));
+    let password = std::env::var("OFFLOAD_PASSWORD").unwrap_or(String::from(""));
+
+    println!("{}, {}", username.clone(), password.clone());
+
+    let token = generate_token(&username, &password, connection);
+
+    if token.len() == 0 {
+        error_and_exit("Failed to authenticate!", 1);
+    }
+
+    return token;
+}
+
+fn stage_auth(connection: ServerConnection, use_env: bool) -> String {
+    if use_env {
+        return stage_auth_env(connection);
+    }
+
     let username = read_str(&format!("\n{}", "Username".purple()));
     let password = rpassword::prompt_password(&format!("{}: ", "Password".purple())).unwrap();
 
