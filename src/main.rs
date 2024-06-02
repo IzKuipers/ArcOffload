@@ -20,7 +20,7 @@ mod util;
 
 fn main() {
     dotenv().ok();
-    // ============================================================
+    // =============================================================
     let arguments = args::parse_args();
 
     let server = arguments.server;
@@ -29,7 +29,7 @@ fn main() {
     let port = if is_https { 443 } else { arguments.port };
     let dest = arguments.destination;
     let use_env = arguments.cred_from_env;
-    // ============================================================
+    // =============================================================
 
     try_ansi_or_exit();
     display_intro();
