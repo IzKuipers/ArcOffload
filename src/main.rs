@@ -4,7 +4,7 @@ use crate::{
     util::read_str,
 };
 use colored::Colorize;
-use dotenv::dotenv;
+use dotenv;
 use types::{
     connection::{server_connection, ServerConnection},
     tree::TreeEntry,
@@ -19,8 +19,8 @@ mod ui;
 mod util;
 
 fn main() {
-    dotenv().ok();
     // =============================================================
+    dotenv::dotenv().ok();
     let arguments = args::parse_args();
 
     let server = arguments.server;
@@ -41,14 +41,12 @@ fn main() {
     let token = stage_auth(connection.clone(), use_env);
     let tree = stage_get_tree(token.clone(), connection.clone());
 
-    stage_go(tree, dest, token, connection)
+    stage_go(tree, dest, token, connection, use_env);
 }
 
 fn stage_auth_env(connection: ServerConnection) -> String {
-    let username = std::env::var("OFFLOAD_USERNAME").unwrap_or(String::from(""));
-    let password = std::env::var("OFFLOAD_PASSWORD").unwrap_or(String::from(""));
-
-    println!("{}, {}", username.clone(), password.clone());
+    let username = dotenv::var("OFFUSR").unwrap();
+    let password = dotenv::var("OFFPWD").unwrap();
 
     let token = generate_token(&username, &password, connection);
 
@@ -86,14 +84,22 @@ fn stage_get_tree(token: String, connection: ServerConnection) -> Vec<TreeEntry>
     return tree;
 }
 
-fn stage_go(tree: Vec<TreeEntry>, dest: String, token: String, connection: ServerConnection) {
-    confirm_or_exit(&format!(
-        "I will now start writing {} file(s) to {}.",
-        tree.len().to_string().blue().bold(),
-        dest.yellow().bold(),
-    ));
+fn stage_go(
+    tree: Vec<TreeEntry>,
+    dest: String,
+    token: String,
+    connection: ServerConnection,
+    use_env: bool,
+) {
+    if !use_env {
+        confirm_or_exit(&format!(
+            "I will now start writing {} file(s) to {}.",
+            tree.len().to_string().blue().bold(),
+            dest.yellow().bold(),
+        ));
 
-    println!("");
+        println!("");
+    }
 
     write_full_tree(tree, token, connection, dest);
 }
