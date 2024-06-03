@@ -97,9 +97,15 @@ fn stage_go(
             tree.len().to_string().blue().bold(),
             dest.yellow().bold(),
         ));
-
-        println!("");
+    } else {
+        println!(
+            "\n{}: using {} for the user credentials.",
+            "Note".yellow().bold(),
+            ".env".blue()
+        )
     }
+
+    println!("");
 
     write_full_tree(tree, token, connection, dest);
 }
