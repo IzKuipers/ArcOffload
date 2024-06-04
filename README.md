@@ -16,11 +16,20 @@ Options:
   -p, --port <PORT>                The TCP port of the server [default: 3333]
   -i, --is-https                   Specify if you want to connect using HTTPS
   -d, --destination <DESTINATION>  The directory to download the files to [default: out]
+  -c, --cred_from_env              Read the credentials from a `.env` file
   -h, --help                       Print help
   -V, --version                    Print version
 ```
 
 For example, to download files from the Community API, use `./arc-offload -s community.arcapi.nl -i`. Once connected you'll be asked for a username and password. Here you'll enter your ArcOS credentials. The utility will then connect with the server to authenticate you, after which it'll ask if you want to proceed. Enter `y` (or `Y`) to do confirm.
+
+## The `.env` file
+Starting with version 1.0.1, it's possible to read the ArcOS account credentials from a `.env` file, instead of being prompted for them. To do this, be sure to specify the `-c` flag, and create a `.env` file as such:
+```
+OFFUSR="username"
+OFFPWD="password"
+```
+The double-quotes are optional unless you have a space in either the username or the password. Be sure to never upload this file anywhere, as it contains sensitive information. When specifying the `-c` flag, ArcOffload grabs the credentials from `.env` and skips the download confirmation. You can use this in conjunction with a cronjob to periodically offload your ArcOS files, for example.
 
 ## Example
 An example usage might be:
